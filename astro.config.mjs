@@ -24,6 +24,10 @@ export default defineConfig({
 					// ],
 				},
 				{
+					label: 'macOS',
+					autogenerate: { directory: 'macOS' },
+				},
+				{
 					label: 'Oracle',
 					items: [
 						{ 
