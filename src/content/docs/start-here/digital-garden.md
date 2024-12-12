@@ -1,0 +1,18 @@
+---
+title: My Digital Garden
+description: Details on what a digital garden is, and how I intend to use this site.
+---
+
+A digital garden is a personal, ever-evolving collection of interconnected notes, ideas, and resources I shared/discovered online. Unlike traditional blogs with chronological posts, digital gardens focus on cultivating knowledge over time, allowing ideas to grow, change, and connect. They often emphasize creativity, learning, and exploration, offering a more fluid and non-linear way to share thoughts and insights.
+
+After some internal deliberation, I have decided to start building my very first public digital garden using Astro (Starlight) which is turning out to be a daunting task as I need to learn MDX and Astro's own components, and trying to figure out how to present my ideas using such resources.
+
+- [Astro Starlight Documentation](https://starlight.astro.build/getting-started/)
+
+## Goal
+
+My objective is to create my very own knowledge repository of everything I have learned in the past 20 years (or so) of working in the IT industry and help me remember as my mind can no longer store as much data as it can in the years that have passed.
+
+## Notation
+
+Posts made in a digital garden will always be a work in progress, and so I will use some form of notation to indicate the status of the article that I'll be posting in this site. I will come back to this page once I figure out the notation I would like to use. 😅

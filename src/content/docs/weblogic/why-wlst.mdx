@@ -1,0 +1,33 @@
+---
+title: Why WLST
+description: Why manual WebLogic config changes can be risky, and how WLST scripting ensures consistency, efficiency, and error-free deployments.
+---
+
+I just got called into a deployment meeting where the OSB cannot be restarted after doing some "config changes". Turns out, they manually updated the WebLogic configuration file called `config.xml` and now the administration server will not start.
+
+This is why we don't recommend updating the files manually. Even if you know what you're doing, it's going to be problematic especially when the error is not even about your changes.
+
+One of the things I advocate in this blog (and its earlier iterations) was the use of WebLogic Scripting Tool (WLST) scripting, especially for configurations that require more than 2 steps. To be honest - I would write a script even if the configuration would take one to two steps (that's how lazy I am). But let me share why it's important to be "lazy" in times like this.
+
+If you write a script for a specific configuration - you don't have to worry about applying that configuration ever again. You just run that script to as many environments as you want. And when you run an WLST script - you have the option to verify the changes before activating them[^1].
+
+If you want to create a file store or JMS server, you can have the following methods in your script and call them as needed:
+
+```python
+def createPersistentFileStore(self, fileStoreName, target):
+    print "Creating Persistent File Store..."
+    cd('/')
+    filestore = cmo.createFileStore('MY-FileStore')
+    filestore.addTarget(target)
+    
+def createJMSServer(self, moduleName, target):
+    print "Creating JMS Server..."
+    cd('/')
+    jmsServerName = moduleName + '-JMSServer'
+    jmsServer = cmo.createJMSServer(jmsServerName)
+    jmsServer.addTarget(target)
+```
+
+You can then test this on a lower environment, update as needed, and run it on other environments. This is a cleaner way to update WebLogic configuration if you don't want to go through each WebLogic Admin Console to do so many steps.
+
+[^1]: assuming of course that configuration changes audit is enabled in the environment
