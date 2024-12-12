@@ -3,8 +3,7 @@ import starlight from '@astrojs/starlight';
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://derekcarlos.github.io',
-	base: 'derek.ph_v2',
+	site: 'https://derek.ph',
 	integrations: [
 		starlight({
 			title: 'Derek\'s Docs',
