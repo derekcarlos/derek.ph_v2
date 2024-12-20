@@ -28,6 +28,10 @@ export default defineConfig({
 					autogenerate: { directory: 'macOS' },
 				},
 				{
+					label: 'Notes',
+					autogenerate: { directory: 'notes' },
+				},
+				{
 					label: 'Oracle',
 					items: [
 						{ 
