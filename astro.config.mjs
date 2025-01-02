@@ -6,7 +6,7 @@ export default defineConfig({
 	site: 'https://derek.ph',
 	integrations: [
 		starlight({
-			title: 'Derek\'s Docs',
+			title: 'Derek\'s Digital Garden',
 			customCss: [
 				"./src/styles/custom.css",
 				"./src/styles/layout.css",
@@ -16,52 +16,29 @@ export default defineConfig({
 			},
 			sidebar: [
 				{
-					label: 'Start Here',
-					autogenerate: { directory: 'start-here' },
-					// items: [
-					// 	// Each item here is one entry in the navigation menu.
-					// 	{ label: 'Example Guide', slug: 'guides/example' },
-					// ],
-				},
-				{
-					label: 'macOS',
-					autogenerate: { directory: 'macOS' },
-				},
-				{
-					label: 'Notes',
-					autogenerate: { directory: 'notes' },
-				},
-				{
-					label: 'Oracle',
+					label: "Start Here",
 					items: [
-						{ 
-							label: "WebLogic",
-							items: [
-								{ label: "Why WLST?", link: "/weblogic/why-wlst/" },
-								{ label: "Application Continuity - Hands On", link: "/weblogic/application-continuity-hands-on/" },
-								{ label: "Create Users", link: "/weblogic/create-users/" },
-								{ label: "Silent Install", link: "/weblogic/weblogic-12c-silent-install/" },
-							],
-						},
-						{
-							label: "Service Bus",
-							items: [
-								{ label: "Increase JMS Adapter Max Capacity", link: "/service-bus/increase-jms-adapter-max-capacity/" },
-								{ label: "Update OSB Data Source Connections", link: "/service-bus/osb-data-source-update/" },
-								{ label: "Run Remote Diagnostic Agent on OSB", link: "/service-bus/remote-diagnostic-agent-osb/" },
-							],
-						},
+						"start/here",
+						"start/about",
+						"start/now",
+						"start/colophon"
 					],
 				},
 				{
-					label: 'Homelab',
-					autogenerate: { directory: 'homelab' },
+					label: "Patterns",
+					items: [
+						"patterns/oracle",
+						"patterns/macOS",
+						"patterns/windows",
+						"patterns/linux",
+					],
 				},
 				{
-					label: 'Windows',
-					autogenerate: { directory: 'windows' },
+					label: "Notes",
+					items: [
+						"notes/start"
+					],
 				},
-
 			],
 			favicon: '/images/favicon.svg',
 			head: [
