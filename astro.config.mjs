@@ -20,7 +20,7 @@ export default defineConfig({
 					items: [
 						"start/here",
 						"start/about",
-						"start/now",
+						"now",
 						"start/colophon"
 					],
 				},
