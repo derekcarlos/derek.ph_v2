@@ -13,6 +13,8 @@ export default defineConfig({
 			],
 			social: {
 				blueSky: 'https://bsky.app/profile/derek.ph',
+				threads: 'https://www.threads.net/@derekcarlos',
+				instagram: 'https://www.instagram.com/derekcarlos/',
 			},
 			sidebar: [
 				{
