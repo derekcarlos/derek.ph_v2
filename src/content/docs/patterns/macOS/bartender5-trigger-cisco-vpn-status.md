@@ -2,7 +2,7 @@
 title: Bartender 5 Trigger for Cisco Secure Connect VPN Status
 ---
 
-I use Bartender as a fantastic tool to manage my menu bar items and one of the things I want to manage is my Cisco Secure Connect VPN.
+I use [Bartender](https://www.macbartender.com) as a fantastic tool to manage my menu bar items and one of the things I want to manage is my Cisco Secure Connect VPN.
 
 If I am connected to the VPN, I want to make sure that I see the Cisco Secure Client VPN's icon so that I don't hog my company's VPN bandwidth with non-work-related web traffic. But I still want to hide it if I am not using it.
 
