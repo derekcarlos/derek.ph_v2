@@ -1,0 +1,69 @@
+---
+title: How to Deploy a GoldenGate Downstream Extract
+description: Steps to verify and ensure that a GoldenGate Downstream Extract is running properly
+---
+
+# How to Deploy a GoldenGate Downstream Extract
+
+A Downstream Extract is a type of GoldenGate Extract process that connects to a Downstream Mining Database to capture committed transactions instead of connecting directly to the source database.
+
+This article is to supplement the existing product documentations on deploying a Downstream Extract.
+
+## The Setup
+
+Our setup follows one of the use cases for Downstream Extract which is the use of an Active Data Guard Physical Standby database.
+
+1. Primary Database ships redo logs to Physical Standby
+2. Physical Standby ships redo logs to Mining Database
+3. GoldenGate Extract processes committed transactions either from the standby redo log (realtime) or from the archived logs
+
+This particular site deploys the primary database on a restricted zone where no direct database access is allowed, so the redo logs are then shipped to a downstream mining database where the GoldenGate Extract can access.
+
+## The Problem
+
+When I first deployed a similar architecture on my local homelab everything worked fine, but when deployed on the customer site the Extract is not producing any trail files. When I checked the `GV$GOLDENGATE_CAPTURE` table the status of the Extract's Capture process is in `DICTIONARY INITIALIZATION`.
+
+When a Downstream Extract is registered from the source database + mining database, the source database ships redo logs to the mining database which contains dictionary information. However, when I checked the `DBA_REGISTERED_ARCHIVED_LOGS` and `GV$FOREIGN_ARCHIVED_LOG` tables and they are the only ones not shipped to the mining database.
+
+## The Solution - `FAL_SERVER`
+
+I need to define the FAL_SERVER database parameter in the Mining Database which contains the TNS name of the standby database. This is to allow the Mining Database to fetch the logs from the physical standby database. After this I did the following:
+
+1. Set the `LOG_ARCHIVE_DEST_3` in Standby to include `REOPEN=5 MAX_FAILURE=0`
+
+```sql
+ALTER SYSTEM SET LOG_ARCHIVE_DEST_3='service=<MINING_UNIQUE_DBNAME> ASYNC NOREGISTER VALID_FOR=(STANDBY_LOGFILES,STANDBY_ROLE) REOPEN=10 MAX_FAILURE=0 DB_UNIQUE_NAME=DNVOT01DRC' SCOPE=BOTH SID='*';
+
+ALTER SYSTEM SET LOG_ARCHIVE_DEST_STATE_3=ENABLE SCOPE=BOTH SID='*';
+```
+2. Register the Extract
+
+```
+DBLOGIN UserIDAlias PRIMARY_DB
+MININGDBLOGIN UserIDAlias MINING_DB
+
+ADD EXTRACT EPOAA, INTEGRATED TRANLOG, BEGIN NOW, desc "Downstream Extract"
+ADD EXTTRAIL EPO/AA, EXTRACT EPOAA, MEGABYTES 500
+REGISTER EXTRACT EPOAA DATABASE CONTAINER (PDB_NAME)
+```
+
+3. Start the Extract
+4. Run some DML statements on Primary
+5. Trigger Log File Switch
+
+```sql
+alter system switch all logfile;
+```
+
+:::note
+Note: Around 5-6 minutes after performing steps 7 and 8, the trail file size has increased. The state of the Extract in `GV$GOLDENGATE_CAPTURE` moved to `WAITING FOR TRANSACTION`
+:::
+
+The WAITING FOR TRANSACTION means the Extract is now capturing committed transactions and writing them into trail file. 
+
+Hope this helps anyone who's setting up a Downstream Extract Deployment with GoldenGate.
+
+## References
+
+- [Downstream Extract for Oracle GoldenGate Deployment](https://docs.oracle.com/en/database/goldengate/core/26/coredoc/extract-downstream-extract.html)
+- [Configuring a Downstream Mining Database](https://docs.oracle.com/en/middleware/goldengate/core/21.3/oracle-db/configuring-downstream-mining-database.html)
